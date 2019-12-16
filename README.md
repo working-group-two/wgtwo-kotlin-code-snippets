@@ -13,5 +13,5 @@ Run via **command line** or an **IDE** like IntelliJ or Visual Studio Code to la
 #### Via command line
 **Example**
 ```shell script
-$ WGTWO_CLIENT_ID=AbC... WGTWO_CLIENT_SECRET=dEf... MSISDN=4799900111 mvn exec:java -Dexec.mainClass="com.wgtwo.example.voicemail.VoicemailMainKt"
+$ WGTWO_CLIENT_ID=AbC... WGTWO_CLIENT_SECRET=dEf... MSISDN=4799900111 ./mvnw exec:java -Dexec.mainClass="com.wgtwo.example.voicemail.VoicemailMainKt"
 ```
