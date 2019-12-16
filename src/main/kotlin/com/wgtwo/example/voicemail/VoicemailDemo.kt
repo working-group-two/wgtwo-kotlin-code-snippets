@@ -2,6 +2,7 @@ package com.wgtwo.example.voicemail
 
 import com.wgtwo.api.auth.Clients
 import com.wgtwo.api.common.OperatorToken
+import com.wgtwo.example.Secrets
 import io.grpc.StatusRuntimeException
 import io.omnicate.messaging.protobuf.Voicemail
 import io.omnicate.messaging.protobuf.VoicemailMediaServiceGrpc
@@ -9,7 +10,7 @@ import javax.sound.sampled.AudioSystem
 
 object VoicemailDemo {
     val channel = Clients.createChannel(Clients.Environment.PROD)
-    val credentials = OperatorToken(System.getenv("WGTWO_CLIENT_ID"), System.getenv("WGTWO_CLIENT_SECRET"))
+    val credentials = OperatorToken(Secrets.WGTWO_CLIENT_ID, Secrets.WGTWO_CLIENT_SECRET)
     val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
     fun listVoicemails(msisdn: String): MutableList<Voicemail.VoicemailMetadata>? {

@@ -1,8 +1,8 @@
 package com.wgtwo.example.voicemail
 
-fun main() {
-    val msisdn = "4799900111" // replace with your desired msisdn
+import com.wgtwo.example.Config
 
-    VoicemailDemo.listVoicemails(msisdn)
-    VoicemailDemo.playAllVoicemailForMsisdn(msisdn)
+fun main() {
+    VoicemailDemo.listVoicemails(Config.MSISDN)
+    VoicemailDemo.playAllVoicemailForMsisdn(Config.MSISDN)
 }
