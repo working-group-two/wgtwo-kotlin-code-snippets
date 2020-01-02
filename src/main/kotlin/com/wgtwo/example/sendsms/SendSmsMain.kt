@@ -2,9 +2,11 @@ package com.wgtwo.example.sendsms
 
 import io.omnicate.messaging.protobuf.Messagecore
 
-fun main(args: Array<String>) {
+fun main() {
     SendSmsDemo.sendSms(
-        content = "Hi! 🤗",
-        direction = Messagecore.Direction.OUTGOING
+        from = Config.FROM,
+        to = Config.TO,
+        content = Config.CONTENT,
+        direction = Messagecore.Direction.valueOf(Config.DIRECTION)
     )
 }
