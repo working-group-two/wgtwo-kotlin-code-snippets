@@ -1,7 +1,7 @@
 package com.wgtwo.example.voicemail
 
-import com.wgtwo.api.auth.Clients
-import com.wgtwo.api.common.OperatorToken
+import com.wgtwo.api.util.auth.Clients
+import com.wgtwo.api.util.auth.OperatorToken
 import com.wgtwo.example.Secrets
 import io.grpc.StatusRuntimeException
 import io.omnicate.messaging.protobuf.Voicemail
