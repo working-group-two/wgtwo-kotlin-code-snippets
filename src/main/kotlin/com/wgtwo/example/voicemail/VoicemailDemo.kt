@@ -33,7 +33,7 @@ object VoicemailDemo {
             return
         }
 
-        val tempFile = createTempFile(prefix = "voicemail", suffix = ".mp3")
+        val tempFile = createTempFile(prefix = "voicemail", suffix = ".wav")
         println(tempFile.absoluteFile)
         val outputStream = tempFile.outputStream()
         voicemail.voicemailFile.writeTo(outputStream)
