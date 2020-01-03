@@ -6,15 +6,16 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 
-fun main(args: Array<String>) = Voicemail()
-    .subcommands(List(), Play(), MarkRead(), Delete())
-    .main(args)
+fun main(args: Array<String>) = Voicemail.main(args)
 
-class Voicemail: CliktCommand() {
+object Voicemail: CliktCommand() {
     override fun run() = Unit
+    init {
+        subcommands(List, Play, MarkRead, Delete)
+    }
 }
 
-class List: CliktCommand() {
+object List: CliktCommand() {
     val msisdn by option("-m", "--msisdn", help = "Msisdn", envvar = "MSISDN").required()
 
     override fun run() {
@@ -33,7 +34,7 @@ class List: CliktCommand() {
     }
 }
 
-class Play: CliktCommand() {
+object Play: CliktCommand() {
     val voicemailId by argument()
 
     override fun run() {
@@ -41,7 +42,7 @@ class Play: CliktCommand() {
     }
 }
 
-class MarkRead: CliktCommand() {
+object MarkRead: CliktCommand() {
     val voicemailId by argument()
 
     override fun run() {
@@ -49,10 +50,10 @@ class MarkRead: CliktCommand() {
     }
 }
 
-class Delete: CliktCommand() {
+object Delete: CliktCommand() {
     val voicemailId by argument()
 
     override fun run() {
-        VoicemailDemo.markVoicemailAsRead(voicemailId)
+        VoicemailDemo.deleteVoicemail(voicemailId)
     }
 }

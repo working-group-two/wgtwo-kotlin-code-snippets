@@ -6,10 +6,6 @@ import io.grpc.StatusRuntimeException
 import io.omnicate.messaging.protobuf.Voicemail
 import io.omnicate.messaging.protobuf.VoicemailMediaServiceGrpc
 import javax.sound.sampled.AudioSystem
-import javax.sound.sampled.FloatControl
-
-
-
 
 object VoicemailDemo {
     private val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)

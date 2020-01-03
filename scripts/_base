@@ -9,11 +9,13 @@ popd () {
 }
 
 pushd ..
-FILE=target/send-sms.jar
+FILE=target/wgtwo.jar
 
 if [ ! -f "$FILE" ]; then
     mvn package
 fi
 
-java -jar $FILE "$@"
+COMMAND=$(basename $0)
+
+java -jar $FILE $COMMAND $@
 popd
