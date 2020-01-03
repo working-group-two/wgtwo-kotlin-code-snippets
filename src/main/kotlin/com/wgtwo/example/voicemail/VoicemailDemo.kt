@@ -1,17 +1,18 @@
 package com.wgtwo.example.voicemail
 
-import com.wgtwo.api.util.auth.Clients
-import com.wgtwo.api.util.auth.OperatorToken
-import com.wgtwo.example.Secrets
+import com.wgtwo.example.Shared.channel
+import com.wgtwo.example.Shared.credentials
 import io.grpc.StatusRuntimeException
 import io.omnicate.messaging.protobuf.Voicemail
 import io.omnicate.messaging.protobuf.VoicemailMediaServiceGrpc
 import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.FloatControl
+
+
+
 
 object VoicemailDemo {
-    val channel = Clients.createChannel(Clients.Environment.PROD)
-    val credentials = OperatorToken(Secrets.WGTWO_CLIENT_ID, Secrets.WGTWO_CLIENT_SECRET)
-    val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
+    private val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
     fun listVoicemails(msisdn: String): MutableList<Voicemail.VoicemailMetadata>? {
         val voicemailMetadataRequest = Voicemail.GetAllVoicemailMetadataRequest.newBuilder().setMsisdn(msisdn).build()
@@ -48,6 +49,7 @@ object VoicemailDemo {
         println("Playing voicemail: $voicemailId")
         clip.start()
         Thread.sleep(clip.microsecondLength / 1000)
+        println("Voicemail ended")
     }
 
     fun markVoicemailAsRead(voicemailId: String): Boolean {

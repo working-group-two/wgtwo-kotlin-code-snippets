@@ -1,16 +1,13 @@
 package com.wgtwo.example.sendsms
 
-import com.wgtwo.api.util.auth.Clients
-import com.wgtwo.api.util.auth.OperatorToken
-import com.wgtwo.example.Secrets
+import com.wgtwo.example.Shared.channel
+import com.wgtwo.example.Shared.credentials
 import io.omnicate.messaging.protobuf.MessageCoreGrpc
 import io.omnicate.messaging.protobuf.Messagecore
 
 typealias Msisdn = String
 
 object SendSmsDemo {
-    private val channel = Clients.createChannel(Clients.Environment.PROD)
-    private val credentials = OperatorToken(Secrets.WGTWO_CLIENT_ID, Secrets.WGTWO_CLIENT_SECRET)
     private val blockingStub = MessageCoreGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
     fun sendSms(

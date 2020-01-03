@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
+pushd ..
+FILE=target/play-voicemail.jar
+
+if [ ! -f "$FILE" ]; then
+    mvn package
+fi
+
+java -jar $FILE "$@"
+popd
+

@@ -7,10 +7,10 @@ import com.github.ajalt.clikt.parameters.arguments.transformAll
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 
-class SendSms : CliktCommand() {
-    val from by option("-f", "--from", help = "From msisdn", envvar = "FROM").required()
-    val to by argument(help = "To msisdn")
-    val content: String by argument(help = "SMS body content").multiple(required = true)
+class SendSms: CliktCommand() {
+    private val from by option("-f", "--from", help = "From msisdn", envvar = "FROM").required()
+    private val to by argument(help = "To msisdn")
+    private val content: String by argument(help = "SMS body content").multiple(required = true)
         .transformAll { list ->
             list.joinToString(separator = " ")
         }
