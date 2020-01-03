@@ -23,20 +23,7 @@ object VoicemailDemo {
         }
 
         val voicemailList = metadataResponse.voicemailsMetadataList
-        if (voicemailList.isEmpty()) {
-            println("No voicemails for msisdn $msisdn")
-        }
-
-        for (voicemailMetadata in voicemailList) {
-            println(voicemailMetadata)
-        }
         return voicemailList
-    }
-
-    fun playAllVoicemailForMsisdn(msisdn: String) {
-        val voicemails = listVoicemails(msisdn) ?: return
-        for (voicemail in voicemails)
-            playVoicemail(voicemail.voicemailId)
     }
 
     fun playVoicemail(voicemailId: String) {
