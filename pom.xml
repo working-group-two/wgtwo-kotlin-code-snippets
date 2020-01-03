@@ -38,6 +38,11 @@
             <artifactId>messaging-grpc</artifactId>
             <version>${wgtwo-apis.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.ajalt</groupId>
+            <artifactId>clikt</artifactId>
+            <version>2.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

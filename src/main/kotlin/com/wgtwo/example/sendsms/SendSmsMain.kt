@@ -1,12 +1,25 @@
 package com.wgtwo.example.sendsms
 
-import io.omnicate.messaging.protobuf.Messagecore
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.multiple
+import com.github.ajalt.clikt.parameters.arguments.transformAll
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
 
-fun main() {
-    SendSmsDemo.sendSms(
-        from = Config.FROM,
-        to = Config.TO,
-        content = Config.CONTENT,
-        direction = Messagecore.Direction.valueOf(Config.DIRECTION)
+class SendSms : CliktCommand() {
+    val from by option("-f", "--from", help = "From msisdn", envvar = "FROM").required()
+    val to by argument(help = "To msisdn")
+    val content: String by argument(help = "SMS body content").multiple(required = true)
+        .transformAll { list ->
+            list.joinToString(separator = " ")
+        }
+
+    override fun run() = SendSmsDemo.sendSms(
+        from = from,
+        to = to,
+        content = content
     )
 }
+
+fun main(args: Array<String>) = SendSms().main(args)
