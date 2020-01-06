@@ -17,9 +17,9 @@ object SendSmsDemo {
         direction: Messagecore.Direction = Messagecore.Direction.OUTGOING
     ) {
         val message = Messagecore.TextMessage.newBuilder()
-            .setBody(content)
-            .setToAddress(to.toAddress())
             .setFromAddress(from.toAddress())
+            .setToAddress(to.toAddress())
+            .setBody(content)
             .setDirection(direction)
             .build()
 
