@@ -1,17 +1,14 @@
 package com.wgtwo.example.voicemail
 
-import com.wgtwo.api.auth.Clients
-import com.wgtwo.api.common.OperatorToken
-import com.wgtwo.example.Secrets
+import com.wgtwo.example.Shared.channel
+import com.wgtwo.example.Shared.credentials
 import io.grpc.StatusRuntimeException
 import io.omnicate.messaging.protobuf.Voicemail
 import io.omnicate.messaging.protobuf.VoicemailMediaServiceGrpc
 import javax.sound.sampled.AudioSystem
 
 object VoicemailDemo {
-    val channel = Clients.createChannel(Clients.Environment.PROD)
-    val credentials = OperatorToken(Secrets.WGTWO_CLIENT_ID, Secrets.WGTWO_CLIENT_SECRET)
-    val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
+    private val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
     fun listVoicemails(msisdn: String): MutableList<Voicemail.VoicemailMetadata>? {
         val voicemailMetadataRequest = Voicemail.GetAllVoicemailMetadataRequest.newBuilder().setMsisdn(msisdn).build()
@@ -23,20 +20,7 @@ object VoicemailDemo {
         }
 
         val voicemailList = metadataResponse.voicemailsMetadataList
-        if (voicemailList.isEmpty()) {
-            println("No voicemails for msisdn $msisdn")
-        }
-
-        for (voicemailMetadata in voicemailList) {
-            println(voicemailMetadata)
-        }
         return voicemailList
-    }
-
-    fun playAllVoicemailForMsisdn(msisdn: String) {
-        val voicemails = listVoicemails(msisdn) ?: return
-        for (voicemail in voicemails)
-            playVoicemail(voicemail.voicemailId)
     }
 
     fun playVoicemail(voicemailId: String) {
@@ -49,7 +33,7 @@ object VoicemailDemo {
             return
         }
 
-        val tempFile = createTempFile(prefix = "voicemail", suffix = ".mp3")
+        val tempFile = createTempFile(prefix = "voicemail", suffix = ".wav")
         println(tempFile.absoluteFile)
         val outputStream = tempFile.outputStream()
         voicemail.voicemailFile.writeTo(outputStream)
@@ -61,6 +45,7 @@ object VoicemailDemo {
         println("Playing voicemail: $voicemailId")
         clip.start()
         Thread.sleep(clip.microsecondLength / 1000)
+        println("Voicemail ended")
     }
 
     fun markVoicemailAsRead(voicemailId: String): Boolean {

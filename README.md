@@ -4,14 +4,41 @@
 
 * You will need either a personal API key or an [operator API key](https://console.wgtwo.com/api-keys-redirect).
   * Supply this client id and secret as environment variables `WGTWO_CLIENT_ID` and `WGTWO_CLIENT_SECRET`.
-* You will neeed a msisdn to target on the platform (and for which you are authorized to manage)
-  * Set the `MSISDN` environment variable 
+* You will need a msisdn to target on the platform (and for which you are authorized to manage)
 
 ### Run
-Run via **command line** or an **IDE** like IntelliJ or Visual Studio Code to launch the example *Main.kt files. 
+Run via an **IDE** like IntelliJ or Visual Studio Code to launch the example `*Main.kt` files, or via **command line**.
 
-#### Via command line
-**Example**
+In any case you must supply the needed parameters as _program arguments_.
+
+#### Command line examples
+
+##### Setup
+
+###### Setting the required environment variables
+
+Before running the other commands it's helpful to set the needed credentials so you don't need to include them in each command.
+
 ```shell script
-$ WGTWO_CLIENT_ID=AbC... WGTWO_CLIENT_SECRET=dEf... MSISDN=4799900111 ./mvnw exec:java -Dexec.mainClass="com.wgtwo.example.voicemail.VoicemailMainKt"
+$ export WGTWO_CLIENT_ID=YOUR_CLIENT_ID
+$ export WGTWO_CLIENT_SECRET=YOUR_CLIENT_SECRET
+```
+
+###### Build the project
+
+Before running the examples you need to build the project.
+
+```shell script
+$ ./mvnw package
+```
+
+##### List and play voicemail
+```shell script
+$ java -jar target/wgtwo.jar voicemail list # lists all the voicemails
+$ java -jar target/wgtwo.jar voicemail play <enter_voicemail_id_here> # play a voicemail by id given in the above command
+```
+
+##### Send SMS
+```shell script
+$ java -jar target/wgtwo.jar sendsms 4799900111 This is a test SMS #
 ```

@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+pushd () {
+    command pushd "$@" > /dev/null
+}
+
+popd () {
+    command popd "$@" > /dev/null
+}
+
+pushd ..
+FILE=target/wgtwo.jar
+
+if [ ! -f "$FILE" ]; then
+    mvn package
+fi
+
+COMMAND=$(basename $0)
+
+java -jar $FILE $COMMAND $@
+popd
