@@ -40,5 +40,5 @@ $ java -jar target/wgtwo.jar voicemail play <enter_voicemail_id_here> # play a v
 
 ##### Send SMS
 ```shell script
-$ java -jar target/wgtwo.jar sendsms 4799900111 This is a test SMS #
+$ java -jar target/wgtwo.jar sendsms --from=4799900111 4799900111 This is a test SMS # sends sms to and from 4799900111
 ```
