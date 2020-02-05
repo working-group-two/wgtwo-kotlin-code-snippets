@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# the filename must match the given command in Main.kt
+source ./_base
