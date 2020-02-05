@@ -5,7 +5,7 @@ import com.wgtwo.example.Shared.credentials
 import io.omnicate.messaging.protobuf.MessageCoreGrpc
 import io.omnicate.messaging.protobuf.Messagecore
 
-fun String.toAddress(type: Messagecore.Address.Type): Messagecore.Address = Messagecore.Address.newBuilder()
+fun String.toAddressProto(type: Messagecore.Address.Type): Messagecore.Address = Messagecore.Address.newBuilder()
     .setNumber(this)
     .setType(type)
     .build()

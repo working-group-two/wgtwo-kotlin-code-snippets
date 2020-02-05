@@ -44,8 +44,8 @@ object SendSms : CliktCommand() {
         .default(Messagecore.Address.Type.INTERNATIONAL_NUMBER)
 
     override fun run() = SendSmsDemo.sendSms(
-        from = from.toAddress(fromType),
-        to = to.toAddress(toType),
+        from = from.toAddressProto(fromType),
+        to = to.toAddressProto(toType),
         content = content,
         direction = direction
     )
