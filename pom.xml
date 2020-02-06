@@ -25,11 +25,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.working-group-two.wgtwoapis</groupId>
-            <artifactId>auth-grpc</artifactId>
-            <version>${wgtwo-apis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.working-group-two.wgtwoapis</groupId>
             <artifactId>common</artifactId>
             <version>${wgtwo-apis.version}</version>
         </dependency>
