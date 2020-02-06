@@ -28,18 +28,6 @@ object ReceiveSmsService {
         .withCallCredentials(Shared.credentials)
         .withWaitForReady()
 
-
-    /*
-    initialize ReceiveSmsService and then add your SmsReceiver observer to this set to be
-    notified when there are new sms received
-    ```
-        smsReceivedObservers.add(object : SmsReceiver {
-            override fun onReceived(sms: Messagecore.Message) {
-                // do something with the sms
-            }
-        })
-    ```
-    */
     val smsReceivedObservers = mutableSetOf<SmsReceiver>()
 
     init {
