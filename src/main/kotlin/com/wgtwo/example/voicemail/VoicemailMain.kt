@@ -17,15 +17,15 @@ object Voicemail : CliktCommand() {
 }
 
 object List : CliktCommand() {
-    val msisdn by option(
-        "-m",
+    val e164 by option(
+        "-e",
         "--e164",
         help = "Ex. +12024561111",
         envvar = "E164"
     ).required()
 
     override fun run() {
-        val voicemails = VoicemailDemo.listVoicemails(msisdn)
+        val voicemails = VoicemailDemo.listVoicemails(e164)
 
         if (voicemails == null) {
             println("Failed to get any voicemails")
