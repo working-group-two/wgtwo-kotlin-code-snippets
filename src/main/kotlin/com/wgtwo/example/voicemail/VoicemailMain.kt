@@ -19,9 +19,9 @@ object Voicemail : CliktCommand() {
 object List : CliktCommand() {
     val msisdn by option(
         "-m",
-        "--msisdn",
-        help = "Msisdn in the E164 format. Ex. +12024561111",
-        envvar = "MSISDN"
+        "--e164",
+        help = "Ex. +12024561111",
+        envvar = "E164"
     ).required()
 
     override fun run() {

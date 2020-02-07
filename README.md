@@ -34,7 +34,7 @@ $ ./mvnw package
 
 ##### List and play voicemail
 ```shell script
-$ java -jar target/wgtwo.jar voicemail list --msisdn <msisdn> # lists all the voicemails. Msisdn in the E164 format. Ex. +12024561111.
+$ java -jar target/wgtwo.jar voicemail list --e164 <e164> # lists all the voicemails.
 $ java -jar target/wgtwo.jar voicemail play <voicemail_id> # play a voicemail by id given in the above command.
 ```
 
