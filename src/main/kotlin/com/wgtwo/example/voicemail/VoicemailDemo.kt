@@ -13,7 +13,7 @@ object VoicemailDemo {
     private val blockingStub = VoicemailMediaServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
     fun listVoicemails(msisdn: String): MutableList<VoicemailProto.VoicemailMetadata>? {
-        val phoneNumberProto = PhoneNumberProto.PhoneNumber.newBuilder().setE164(msisdn)
+        val phoneNumberProto = PhoneNumberProto.PhoneNumber.newBuilder().setE164(msisdn).build()
         val voicemailMetadataRequest =
             VoicemailProto.GetAllVoicemailMetadataRequest.newBuilder().setTo(phoneNumberProto).build()
         val metadataResponse = try {
