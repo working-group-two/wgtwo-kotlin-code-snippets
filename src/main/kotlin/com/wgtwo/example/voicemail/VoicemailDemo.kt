@@ -40,11 +40,13 @@ object VoicemailDemo {
         println(tempFile.absoluteFile)
         val outputStream = tempFile.outputStream()
 
-        if (voicemail.bytesCase != BytesCase.WAV) {
-            println("Unexpected format for voicemail.")
-            return
+        when (voicemail.bytesCase) {
+            BytesCase.WAV -> voicemail.wav.writeTo(outputStream)
+            BytesCase.BYTES_NOT_SET, null -> {
+                println("Error: no content found in the voicemail response.")
+                return
+            }
         }
-        voicemail.wav.writeTo(outputStream)
         outputStream.close()
 
         val audioInputStream = AudioSystem.getAudioInputStream(tempFile)
