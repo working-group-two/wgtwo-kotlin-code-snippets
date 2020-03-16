@@ -43,6 +43,12 @@ $ java -jar target/wgtwo.jar voicemail play <voicemail_id> # play a voicemail by
 $ java -jar target/wgtwo.jar sendsms --from=4799900111 4799900111 This is a test SMS # sends sms to and from 4799900111
 ```
 
+##### Send binary SMS
+```shell script
+# sends binary sms from TEST to 4799900111 with hexadecimal content FFFF0000FFFF0000 and message class 3
+$ java -jar target/wgtwo.jar sendbinarysms --from=TEST --from-type=TEXT --direction=INCOMING --message-class=CLASS3 4799900111 FFFF0000FFFF0000
+```
+
 ##### Receive SMS
 ```shell script
 $ java -jar target/wgtwo.jar receivesms 4799900111 # shows sms activity for 4799900111
