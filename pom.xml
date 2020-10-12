@@ -12,9 +12,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.3.61</kotlin.version>
+        <kotlin.version>1.4.10</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <wgtwo-apis.version>6caa22c</wgtwo-apis.version>
+        <wgtwo-apis.version>450ea55c53e588d2b61e72c291d719c83e56b1f9</wgtwo-apis.version>
     </properties>
 
     <dependencies>
@@ -35,12 +35,17 @@
         </dependency>
         <dependency>
             <groupId>com.github.working-group-two.wgtwoapis</groupId>
+            <artifactId>phonenumber-utils</artifactId>
+            <version>${wgtwo-apis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.working-group-two.wgtwoapis</groupId>
             <artifactId>voicemail-grpc</artifactId>
             <version>${wgtwo-apis.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.working-group-two.wgtwoapis</groupId>
-            <artifactId>messaging-grpc</artifactId>
+            <artifactId>sms-grpc</artifactId>
             <version>${wgtwo-apis.version}</version>
         </dependency>
         <dependency>

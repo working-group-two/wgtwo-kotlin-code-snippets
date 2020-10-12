@@ -1,37 +1,37 @@
 package com.wgtwo.example.sendsms
 
+import com.wgtwo.api.common.v0.PhoneNumberProto
+import com.wgtwo.api.sms.v0.SmsProto
+import com.wgtwo.api.sms.v0.SmsServiceGrpc
 import com.wgtwo.example.Shared.channel
 import com.wgtwo.example.Shared.credentials
-import io.omnicate.messaging.protobuf.MessageCoreGrpc
-import io.omnicate.messaging.protobuf.Messagecore
-
-fun String.toAddressProto(type: Messagecore.Address.Type): Messagecore.Address = Messagecore.Address.newBuilder()
-    .setNumber(this)
-    .setType(type)
-    .build()
+import io.grpc.StatusRuntimeException
 
 object SendSmsDemo {
-    private val blockingStub = MessageCoreGrpc.newBlockingStub(channel).withCallCredentials(credentials)
+    private val blockingStub = SmsServiceGrpc.newBlockingStub(channel).withCallCredentials(credentials)
 
-    fun sendSms(
-        from: Messagecore.Address,
-        to: Messagecore.Address,
-        content: String,
-        direction: Messagecore.Direction = Messagecore.Direction.OUTGOING
+    fun sendToSubscriber(
+        from: String,
+        to: PhoneNumberProto.PhoneNumber,
+        content: String
     ) {
-        val message = Messagecore.TextMessage.newBuilder()
-            .setFromAddress(from)
-            .setToAddress(to)
-            .setBody(content)
-            .setDirection(direction)
+        val message = SmsProto.SendTextToSubscriberRequest.newBuilder()
+            .setToSubscriber(to)
+            .setFromTextAddress(PhoneNumberProto.TextAddress.newBuilder().setTextAddress(from).build())
+            .setContent(content)
             .build()
 
-        val sendResult = blockingStub.sendTextMessage(message)
+        val sendResult = try {
+            blockingStub.sendTextToSubscriber(message)
+        } catch (e: StatusRuntimeException) {
+            println("Exception: ${e.status}")
+            return
+        }
         val status = sendResult.status
-        if (status == Messagecore.SendAttemptStatus.SEND_OK) {
-            println("Successfully sent message to $to, from $from")
+        if (status == SmsProto.SendResponse.SendStatus.SEND_OK) {
+            println("Successfully sent message to ${to.e164}, from $from")
         } else {
-            println("Failed to send message to $to, from $from. Got status: $status. Description: ${sendResult.description}")
+            println("Failed to send message to ${to.e164}, from $from. Got status: $status. Description: ${sendResult.description}")
         }
     }
 }

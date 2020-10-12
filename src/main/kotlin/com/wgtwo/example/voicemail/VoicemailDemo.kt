@@ -1,9 +1,8 @@
 package com.wgtwo.example.voicemail
 
 import com.wgtwo.api.common.v0.PhoneNumberProto
-import com.wgtwo.api.messaging.v0.VoicemailMediaServiceGrpc
-import com.wgtwo.api.messaging.v0.VoicemailProto
-import com.wgtwo.api.messaging.v0.VoicemailProto.GetVoicemailResponse.BytesCase
+import com.wgtwo.api.voicemail.v0.VoicemailMediaServiceGrpc
+import com.wgtwo.api.voicemail.v0.VoicemailProto
 import com.wgtwo.example.Shared.channel
 import com.wgtwo.example.Shared.credentials
 import io.grpc.StatusRuntimeException
@@ -41,8 +40,8 @@ object VoicemailDemo {
         val outputStream = tempFile.outputStream()
 
         when (voicemail.bytesCase) {
-            BytesCase.WAV -> voicemail.wav.writeTo(outputStream)
-            BytesCase.BYTES_NOT_SET, null -> {
+            VoicemailProto.GetVoicemailResponse.BytesCase.WAV -> voicemail.wav.writeTo(outputStream)
+            VoicemailProto.GetVoicemailResponse.BytesCase.BYTES_NOT_SET, null -> {
                 println("Error: no content found in the voicemail response.")
                 return
             }

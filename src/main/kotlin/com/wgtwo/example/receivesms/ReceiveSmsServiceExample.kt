@@ -1,13 +1,13 @@
 package com.wgtwo.example.receivesms
 
+import com.wgtwo.api.sms.v0.SmsProto
+import com.wgtwo.api.sms.v0.SmsServiceGrpc
 import com.wgtwo.example.Shared
 import io.grpc.Context
 import io.grpc.Status
 import io.grpc.StatusException
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
-import io.omnicate.messaging.protobuf.MessageCoreGrpc
-import io.omnicate.messaging.protobuf.Messagecore
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.util.concurrent.Executors
@@ -15,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 interface SmsReceiver {
-    fun onReceived(sms: Messagecore.Message)
+    fun onReceived(sms: SmsProto.Text)
 }
 
 object ReceiveSmsService {
@@ -23,7 +23,7 @@ object ReceiveSmsService {
     private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
     private val context: Context.CancellableContext = Context.current().withCancellation()
 
-    private val messageCoreStub = MessageCoreGrpc
+    private val stub = SmsServiceGrpc
         .newStub(Shared.channel)
         .withCallCredentials(Shared.credentials)
         .withWaitForReady()
@@ -38,8 +38,8 @@ object ReceiveSmsService {
         logger.info("Starting to listen for SMS")
         context.run {
             // call GRPC method receiveMessages and register ReceiveMessagesObserver
-            messageCoreStub.receiveMessages(
-                Messagecore.ReceiveMessagesRequest.getDefaultInstance(),
+            stub.receiveText(
+                SmsProto.ReceiveTextRequest.getDefaultInstance(),
                 ReceiveMessagesObserver
             )
         }
@@ -51,18 +51,13 @@ object ReceiveSmsService {
         executor.awaitTermination(1, TimeUnit.SECONDS)
     }
 
-    private object ReceiveMessagesObserver : StreamObserver<Messagecore.MessageBox> {
+    private object ReceiveMessagesObserver : StreamObserver<SmsProto.Text> {
 
         // Handle new messages
-        override fun onNext(messageBox: Messagecore.MessageBox) {
-            logger.info("Received messageBox with ${messageBox.messagesList.size} messages")
-            messageBox.messagesList.forEach { message ->
-
-                // Each message needs to be acked or it will be resent
-                SmsReceivedAcker.ackMessage(message)
-                smsReceivedObservers.parallelStream().forEach {
-                    it.onReceived(message)
-                }
+        override fun onNext(text: SmsProto.Text) {
+            SmsReceivedAcker.ackMessage(text)
+            smsReceivedObservers.parallelStream().forEach {
+                it.onReceived(text)
             }
         }
 
@@ -97,32 +92,28 @@ object ReceiveSmsService {
                 executor.schedule({ listenForSms() }, wait.toMillis(), TimeUnit.MILLISECONDS)
             }
         }
-    }
 
 
-    private object SmsReceivedAcker {
-        fun ackMessage(it: Messagecore.Message) {
-            val ackMessageRequest = Messagecore.AckMessageRequest.newBuilder()
-                .setAckStatus(
-                    Messagecore.ReceiveStatus.newBuilder()
-                        .setMessageId(it.messageId)
-                        .setStatus(Messagecore.ReceiveAttemptStatus.RECEIVE_OK)
-                        .build()
-                )
-                .build()
-            messageCoreStub.ackMessage(ackMessageRequest, AckMessageObserver)
-        }
-    }
-
-    object AckMessageObserver : StreamObserver<Messagecore.AckMessageResponse> {
-        override fun onNext(value: Messagecore.AckMessageResponse) {}
-
-        override fun onError(t: Throwable) {
-            logger.warn("${t.message}")
+        private object SmsReceivedAcker {
+            fun ackMessage(sms: SmsProto.Text) {
+                val ackMessageRequest = SmsProto.AckRequest.newBuilder()
+                    .setId(sms.id)
+                    .setStatus(SmsProto.AckRequest.ReceiveStatus.RECEIVE_OK)
+                    .build()
+                stub.ack(ackMessageRequest, AckMessageObserver)
+            }
         }
 
-        override fun onCompleted() {
-            logger.debug("Completed ack")
+        object AckMessageObserver : StreamObserver<SmsProto.AckResponse> {
+            override fun onNext(value: SmsProto.AckResponse) {}
+
+            override fun onError(t: Throwable) {
+                logger.warn("${t.message}")
+            }
+
+            override fun onCompleted() {
+                logger.debug("Completed ack")
+            }
         }
     }
 }
