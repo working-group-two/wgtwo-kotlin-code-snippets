@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <wgtwo-apis.version>450ea55c53e588d2b61e72c291d719c83e56b1f9</wgtwo-apis.version>
     </properties>
